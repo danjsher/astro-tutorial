@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
-import { Image } from 'astro:image';
+import { Image } from 'astro:assets';
 
 const items = await getCollection('furniture');
 const sortedItems = items.sort((a, b) => a.data.order - b.data.order);
