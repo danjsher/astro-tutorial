@@ -1,0 +1,51 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:image';
+
+const items = await getCollection('furniture');
+const sortedItems = items.sort((a, b) => a.data.order - b.data.order);
+---
+
+<Layout title="For Sale | Custom Woodworking">
+  <main class="max-w-7xl mx-auto px-8 py-20">
+    <header class="mb-16">
+      <h1 class="text-4xl font-['Playfair_Display'] mb-4">Available Work</h1>
+      <p class="text-zinc-500 max-w-md font-light leading-relaxed">
+        One-of-a-kind pieces currently in the studio. For custom commissions or shipping inquiries, please use the contact form.
+      </p>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-16">
+      {sortedItems.map((item) => (
+        <a href={`/furniture/${item.slug}`} class="group">
+          <div class="relative aspect-[3/4] overflow-hidden bg-zinc-50 border border-zinc-100">
+            <Image 
+              src={item.data.coverImage} 
+              alt={item.data.title}
+              class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
+            />
+            {item.data.status === 'Sold' && (
+              <div class="absolute top-4 left-4 bg-white/90 px-3 py-1 text-[10px] uppercase tracking-[0.2em] font-bold">
+                Sold
+              </div>
+            )}
+          </div>
+          
+          <div class="mt-6 flex justify-between items-start">
+            <div>
+              <h2 class="text-xl font-medium tracking-tight text-zinc-900 group-hover:underline decoration-1 underline-offset-4">
+                {item.data.title}
+              </h2>
+              <p class="text-sm text-zinc-500 mt-1">{item.data.species}</p>
+              <p class="text-[11px] text-zinc-400 mt-0.5 uppercase tracking-tighter">{item.data.dimensions}</p>
+            </div>
+            <p class="text-lg font-light text-zinc-900">
+              {item.data.price || 'Inquire'}
+            </p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </main>
+</Layout>
