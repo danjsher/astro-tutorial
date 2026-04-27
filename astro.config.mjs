@@ -4,12 +4,13 @@ import { SITE } from "./src/consts";
 
 import sitemap from "@astrojs/sitemap";
 import favicons from "astro-favicons";
+import cloudflare from '@astrojs/cloudflare'
 
 // https://astro.build/config
 export default defineConfig({
   site: SITE.CANONICAL_URL,
   output: "static",
-
+  adapter: cloudflare({}),
   build: {
     inlineStylesheets: "always",
   },
