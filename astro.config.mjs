@@ -3,7 +3,6 @@ import { defineConfig, fontProviders } from "astro/config";
 import { SITE } from "./src/consts";
 
 import sitemap from "@astrojs/sitemap";
-import favicons from "astro-favicons";
 import cloudflare from '@astrojs/cloudflare'
 
 // https://astro.build/config
@@ -33,7 +32,7 @@ export default defineConfig({
     },
   ],
 
-  integrations: [sitemap(), favicons()],
+  integrations: [sitemap()],
 
   security: {
     csp: {
@@ -62,4 +61,12 @@ export default defineConfig({
       },
     },
   },
+  vite: {
+    optimizedDeps: {
+      exclude: ['astro-favicons']
+    },
+    ssr: {
+      external: ['astro-favicons']
+    }
+  }
 });
