@@ -1,43 +1,93 @@
-# Astro Starter Kit: Minimal
+# One Space Away - Interior Design Template
 
-```sh
-npm create astro@latest -- --template minimal
+**One Space Away** is single-page template built for interior designers, architects, and home stylists.
+
+<img width="1910" height="915" alt="PageSpeed Insights" src="https://github.com/user-attachments/assets/8b3bd9cf-6e91-4624-bda5-aa5cf71e950b" />
+
+**Features**
+
+- Astro 6.0 Ready:
+  - Native Font Optimization
+  - Pre-configured CSP (Content Security Policy) and security headers (optimized for Cloudflare, easily adaptable for Vercel or Netlify).
+    <img width="1910" height="915" alt="HTTP Observatory" src="https://github.com/user-attachments/assets/4a38f8c3-c851-4239-a0b5-73f80fe8be57" />
+- Responsive: mobile, tablet, and desktop devices.
+- Stack: Astro (HTML, CSS, and JS) with minimal dependencies.
+
+## Deployment
+
+You will find a `_headers `file located in the `/public` folder. This file handles the Content Security Policy (CSP) and XSS protections mainly for Cloudflare.
+
+If you are deploying to Vercel or Netlify, simply move these rules to a `vercel.json` or `netlify.toml` file respectively.
+
+## Media & Image Optimization
+
+### Local Optimization (Default)
+
+By default, the template uses Astro’s built-in `<Image />` component for automatic optimization (WebP/AVIF conversion, resizing).
+
+```astro
+import consultationImage from '/src/assets/images/consultation.jpg';
+
+<div class="process-step-image-wrapper">
+   <Image
+     src={consultationImage}
+     alt="Interior Design Consultation"
+     class="media"
+   />
+</div>
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+### Cloudinary Integration (Optional)
 
-## 🚀 Project Structure
+For top-tier loading speeds and high-resolution assets, you can easily swap to [Astro-Cloudinary](https://docs.astro.build/en/guides/media/cloudinary/).
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+```
+pnpm add astro-cloudinary
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+```astro
+import { CldImage } from 'astro-cloudinary';
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+<CldImage
+  src="your-public-id"
+  width="800"
+  height="600"
+  alt="Project Transformation"
+/>
+```
 
-Any static assets, like images, can be placed in the `public/` directory.
+## Fonts
 
-## 🧞 Commands
+All local fonts are stored in `src/assets/fonts/`. To add or change fonts:
 
-All commands are run from the root of the project, from a terminal:
+1. Drop your `.woff2` files into the fonts folder.
+2. Update the `astro.config.mjs` font provider:
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+```mjs
+fonts: [
+    {
+      provider: fontProviders.local(),
+      name: "YourFontName",
+      cssVariable: "--font-custom",
+      options: {
+        variants: [{
+            src: ["./src/assets/fonts/YourFont.woff2"],
+            weight: "normal",
+            style: "normal",
+          }],
+      },
+    },
+  ],
+```
 
-## 👀 Want to learn more?
+3. Update the variable in `src/styles/_reset.css`:
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+```css
+font-family: var(--font-custom), system-ui, sans-serif;
+```
+
+*For more info on using remote fonts (Google Fonts, etc.), check the [Astro Font Provider Reference](https://docs.astro.build/en/reference/font-provider-reference/).*
+
+## Technical Details
+
+Carousels: Powered by **Swiper.js.** Initialization logic is in `utils/initSwiper.ts`.

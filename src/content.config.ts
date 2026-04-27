@@ -1,22 +1,13 @@
-import { defineCollection, z } from "astro:content";
-import { glob } from "astro/loaders"; // New in the Content Layer API
+import { defineCollection } from "astro:content";
+import { z } from "astro/zod";
+import { glob } from "astro/loaders";
 
-const furniture = defineCollection({
-  // The 'loader' is now required.
-  // It tells Astro to look for .md or .mdx files in this specific directory.
-  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/furniture" }),
-  schema: ({ image }) =>
-    z.object({
-      title: z.string(),
-      price: z.string().optional(),
-      status: z
-        .enum(["Available", "Sold", "Commission Only"])
-        .default("Available"),
-      species: z.string(),
-      dimensions: z.string(),
-      coverImage: image(),
-      order: z.number(),
-    }),
+const legal = defineCollection({
+  loader: glob({ pattern: "**/[^_]*.{md,mdx}", base: "./src/content/legal" }),
+  schema: z.object({
+    title: z.string(),
+    lastUpdated: z.string(),
+  }),
 });
 
-export const collections = { furniture };
+export const collections = { legal };
