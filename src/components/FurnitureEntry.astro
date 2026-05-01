@@ -20,41 +20,39 @@ const {
 } = Astro.props;
 ---
 
-  <div class="section-container">
-    <div style="display: flex;">
-      <div class="project-image-container" >
-        <BaseSwiper sliderName="portfolio">
-            {
-                images.map((img) => (
-                    <div class="swiper-slide">
-                        <div class="project-image">
-                            <Image
-                                class="image after active"
-                                src={img}
-                                alt="test"
-                                width: {400}
-                            />
-                        </div>
-                    </div>
-                ))
-            }
-        </BaseSwiper>
-      </div>
-      <div class="project-info">
-        <div class="info-section">
-            <h2 class="section-subtitle info-title">
-              {title}
-            </h2>
-            <p class="info-text">
-             ${price}
-            </p>
-            <p class="info-text">
-              {dimensions}
-            </p>
-            <p class="info-text">
-              {description}
-            </p>
-        </div>
+  <div class="furniture-entry-container">
+    <div class="project-image-container" >
+      <BaseSwiper sliderName="portfolio">
+          {
+              images.map((img) => (
+                  <div class="swiper-slide">
+                      <div class="project-image">
+                          <Image
+                              class="image after active"
+                              src={img}
+                              alt="test"
+                              width: {400}
+                          />
+                      </div>
+                  </div>
+              ))
+          }
+      </BaseSwiper>
+    </div>
+    <div class="project-info">
+      <div class="info-section">
+          <h2 class="section-subtitle info-title">
+            {title}
+          </h2>
+          <p class="info-text">
+           ${price}
+          </p>
+          <p class="info-text">
+            {dimensions}
+          </p>
+          <p class="info-text">
+            {description}
+          </p>
       </div>
     </div>
 </div>
@@ -84,19 +82,21 @@ const {
         transform: scale(0.75);
     }
 
+    .furniture-entry-container {
+      display: flex;
+    }
+
     .project-image-container {
         position: relative;
         min-height: 25rem;
         overflow: hidden;
-        justify-content: flex-start;
-        flex: 1;
+        width: 50%;
     }
 
     .project-image {
         position: relative;
         min-height: 25rem;
         overflow: hidden;
-        flex: 1;
     }
 
     .image {
@@ -117,7 +117,6 @@ const {
         flex-direction: column;
         justify-content: flex-start;
         gap: var(--px-32);
-        flex: 1;
     }
 
     .info-section {
