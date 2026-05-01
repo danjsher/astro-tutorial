@@ -22,7 +22,7 @@ const {
 
   <div class="section-container">
     <div style="display: flex;">
-      <section class="project-image" >
+      <div class="project-image" >
         <BaseSwiper sliderName="portfolio">
             {
                 images.map((img) => (
@@ -32,15 +32,15 @@ const {
                                 class="image after active"
                                 src={img}
                                 alt="test"
-                                widht: {400}
+                                width: {400}
                             />
                         </div>
                     </div>
                 ))
             }
         </BaseSwiper>
-      </section>
-      <section class="project-info">
+      </div>
+      <div class="project-info">
         <div class="info-section">
             <h2 class="section-subtitle info-title">
               {title}
@@ -55,7 +55,7 @@ const {
               {description}
             </p>
         </div>
-      </section>
+      </div>
     </div>
 </div>
 
