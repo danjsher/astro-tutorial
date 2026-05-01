@@ -1,0 +1,228 @@
+---
+import BaseSwiper from "./BaseSwiper.astro";
+import { Image } from "astro:assets";
+
+interface Props {
+  title: string;
+  price: int;
+  dimensions: string;
+  description: string;
+  images: string[];
+
+}
+
+const {
+  title,
+  price,
+  dimensions,
+  description,
+  images = [],
+} = Astro.props;
+---
+
+  <div class="section-container">
+    <div style="display: flex;">
+      <section class="project-image" >
+        <BaseSwiper sliderName="portfolio">
+            {
+                images.map((img) => (
+                    <div class="swiper-slide">
+                        <div class="project-image">
+                            <Image
+                                class="image after active"
+                                src={img}
+                                alt="test"
+                                layout="full-width"
+                            />
+                        </div>
+                    </div>
+                ))
+            }
+        </BaseSwiper>
+      </section>
+      <section class="project-info">
+        <div class="info-section">
+            <h2 class="section-subtitle info-title">
+              {title}
+            </h2>
+            <p class="info-text">
+             ${price}
+            </p>
+            <p class="info-text">
+              {dimensions}
+            </p>
+            <p class="info-text">
+              {description}
+            </p>
+        </div>
+      </section>
+    </div>
+</div>
+
+<style>
+    :global(.portfolio-swiper) {
+        position: relative;
+    }
+
+    .swiper-slide {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--px-64);
+        opacity: 0;
+        transform: scale(0.75);
+        transition: all var(--transition-long);
+    }
+
+    .swiper-slide-active {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    .swiper-slide-prev,
+    .swiper-slide-next {
+        opacity: 0;
+        transform: scale(0.75);
+    }
+
+    .project-image {
+        position: relative;
+        min-height: 25rem;
+        overflow: hidden;
+        flex: 1;
+    }
+
+    .image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        object-fit: cover;
+        opacity: 0;
+        transition: opacity var(--transition-long);
+    }
+
+    .image.active {
+        opacity: 1;
+    }
+
+    .project-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: var(--px-32);
+        flex: 1;
+    }
+
+    .info-section {
+        display: flex;
+        flex-direction: column;
+        gap: var(--px-16);
+    }
+
+    .info-title {
+        margin-bottom: 0;
+    }
+
+    .view-details {
+        display: inline-flex;
+        font-weight: 500;
+        margin-top: auto;
+    }
+
+    .btn--secondary {
+        border-bottom: var(--px-2) solid currentColor;
+    }
+
+    .btn--secondary-hovered {
+        display: block;
+    }
+
+    @media screen and (max-width: 64rem) {
+        .swiper-slide {
+            gap: var(--px-32);
+        }
+    }
+
+    @media screen and (max-width: 55rem) {
+        :global(.portfolio-swiper) {
+            padding-inline: 0;
+        }
+
+        .swiper-slide {
+            grid-template-columns: 1fr;
+            gap: var(--px-32);
+        }
+    }
+</style>
+
+<script>
+    import { initSwiper } from "@utils/initSwiper";
+
+    function initPortfolioSlider() {
+        const portfolioSwiper = initSwiper("portfolio", {
+            spaceBetween: 30,
+            navigation: {
+                nextEl: ".portfolio-next",
+                prevEl: ".portfolio-prev",
+            },
+            pagination: {
+                el: ".portfolio-pagination",
+                clickable: true,
+            },
+        });
+
+        const updateSlideView = (view: string, slide: HTMLElement) => {
+            const images = slide.querySelectorAll(".image");
+
+            images.forEach((img) => {
+                if (img.classList.contains(view)) {
+                    img.classList.add("active");
+                    img.setAttribute("aria-hidden", "false");
+                } else {
+                    img.classList.remove("active");
+                    img.setAttribute("aria-hidden", "true");
+                }
+            });
+        };
+
+        document.addEventListener("click", (e) => {
+            const btn = (e.target as HTMLElement).closest<HTMLButtonElement>(
+                ".toggle-btn",
+            );
+            if (!btn) return;
+
+            document
+                .querySelector(".toggle-btn.active")
+                ?.classList.remove("active");
+            btn.classList.add("active");
+
+            const view = btn.dataset.view;
+            const currentSlide =
+                portfolioSwiper.slides[portfolioSwiper.activeIndex];
+            if (currentSlide && view) updateSlideView(view, currentSlide);
+        });
+
+        portfolioSwiper.on("slideChangeTransitionStart", () => {
+            const activeSlide =
+                portfolioSwiper.slides[portfolioSwiper.activeIndex];
+            if (activeSlide) updateSlideView("after", activeSlide);
+
+            document
+                .querySelector(".toggle-btn.active")
+                ?.classList.remove("active");
+            document
+                .querySelector('.toggle-btn[data-view="after"]')
+                ?.classList.add("active");
+        });
+
+        return () => {
+            portfolioSwiper.destroy();
+        };
+    }
+
+    let cleanup = initPortfolioSlider();
+
+    document.addEventListener("astro:after-swap", () => {
+        if (cleanup) cleanup();
+        cleanup = initPortfolioSlider();
+    });
+</script>

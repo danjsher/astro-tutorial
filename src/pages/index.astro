@@ -1,8 +1,32 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
 import HeroSection from '@components/HeroSection.astro';
-import PortfolioSection from '@components/PortfolioSection.astro';
+import AboutSection from '@components/AboutSection.astro';
 import ContactUsSection from '@components/ContactUsSection.astro';
+import PortfolioSection from '@components/PortfolioSection.astro'
+import FurnitureEntry from '@components/FurnitureEntry.astro'
+import SplitSwiper from '@components/SplitSwiper.astro'
+import before1Image from "/src/assets/images/before1.png";
+import after1Image from "/src/assets/images/after1.png";
+import before2Image from "/src/assets/images/before2.png";
+import after2Image from "/src/assets/images/after2.png";
+
+const myProjects = [
+  {
+    title: "Live Edge Walnut Table",
+    price: 0,
+    dimensions: "something x something inches",
+    description: "A statement piece featuring locally sourced walnut and industrial steel legs.",
+    images: [before2Image, after1Image],
+  },
+  {
+    title: "Minimalist Oak Desk",
+    price: 0,
+    dimensions: "something x something inches",
+    description: "Designed for small spaces with integrated cable management.",
+    images: [before2Image, after1Image],
+  }
+];
 ---
 
 <BaseLayout>

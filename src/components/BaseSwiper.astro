@@ -7,32 +7,16 @@ interface Props {
   sliderName: string;
   navigation?: boolean;
   pagination?: boolean;
-  beforeAfter?: boolean;
 }
 
 const {
   sliderName,
   navigation = true,
   pagination = true,
-  beforeAfter = false,
 } = Astro.props;
 ---
 
 <div class={`${sliderName}-showcase`}>
-  <!-- Before/After Toggle -->
-  {
-    beforeAfter && (
-      <div class="showcase-toggle">
-        <button class="toggle-btn" data-view="before">
-          Before
-        </button>
-        <button class="toggle-btn active" data-view="after">
-          After
-        </button>
-      </div>
-    )
-  }
-
   <div class={`swiper ${sliderName}-swiper`}>
     <div class="swiper-wrapper">
       <slot />
@@ -80,46 +64,6 @@ const {
 </div>
 
 <style>
-  .showcase-toggle {
-    display: flex;
-    gap: var(--px-16);
-    padding-inline: var(--px-64);
-    margin-bottom: var(--px-32);
-  }
-
-  .toggle-btn {
-    font-size: var(--text-xl);
-    font-weight: 500;
-    cursor: pointer;
-    opacity: 0.55;
-    transition: opacity 0.27s cubic-bezier(0, 0, 0.58, 1);
-    position: relative;
-    padding-bottom: var(--px-2);
-  }
-
-  .toggle-btn::after {
-    content: '';
-    display: block;
-    position: absolute;
-    left: 0;
-    bottom: -1px;
-    width: 100%;
-    height: var(--px-2);
-    background-color: currentColor;
-    transform: scaleX(0);
-    transform-origin: right center;
-    transition: transform 0.25s ease-out;
-  }
-
-  .toggle-btn.active {
-    opacity: 1;
-  }
-
-  .toggle-btn.active::after {
-    transform: scaleX(1);
-    transform-origin: left center;
-  }
-
   .nav-btn {
     position: absolute;
     top: 50%;
@@ -129,14 +73,15 @@ const {
     border: none;
     width: var(--px-48);
     height: var(--px-48);
-    border-radius: 50%;
+    border-radius: 0%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: var(--shadow-lg);
+    --box-shadow: var(--shadow-lg);
     z-index: 2;
     transition: all 0.4s var(--ease-elastic-2);
+    opacity: .5
   }
 
   .nav-btn.prev {
